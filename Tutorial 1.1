@@ -1,0 +1,43 @@
+// when working with a pretrained model, you need to know what's in the data set that it is trained with
+// supervised learning requires a labled data set
+// mobile net is a pretrained model trained on the database of images called imagenet
+
+// Issue with createImg(); function
+
+let mobilenet;
+
+
+
+function modelReady() {
+  console.log('Model is ready!');
+  mobilenet.predict(puffin, gotResults);
+}
+
+function gotResults(error, results){
+  if(error) {
+    console.error(error);
+  } else {
+    console.log(results);
+  }
+}
+
+function imageReady() {
+  console.log('Image is ready!');
+  image(puffin, 0, 0, width, height);
+}
+
+function setup() {
+  createCanvas(400, 400);
+  
+  puffin = createImg('images/puffin.jpg', imageReady);
+  puffin.hide();
+  
+  background(0);
+  
+  
+  mobilenet = ml5.imageClassifier('MobileNet', modelReady);
+}
+
+function draw() {
+  
+}

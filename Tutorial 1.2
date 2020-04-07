@@ -1,0 +1,64 @@
+//ml5.js webcam image classification coding train
+
+//HTML section ****
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.sound.min.js"></script>
+	<script src="https://unpkg.com/ml5@0.1.1/dist/ml5.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+
+  </head>
+  <body>
+    <script src="sketch.js"></script>
+  </body>
+</html>
+
+//JS Sketch section*****
+// Image Classification with MobileNet
+// A Beginner's Guide to Machine Learning with ml5.js
+// The Coding Train / Daniel Shiffman
+// https://youtu.be/yNkAuWz5lnY
+// https://thecodingtrain.com/learning/ml5/1.1-image-classification.html
+// https://editor.p5js.org/codingtrain/sketches/qFZF7iDe
+
+let mobilenet;
+let video;
+let label = '';
+
+function modelReady() {
+  console.log('Model is ready!!!');
+  mobilenet.predict(gotResults);
+}
+
+function gotResults(error, results) {
+  if (error) {
+    console.error(error);
+  } else {
+    label = results[0].className;
+    fill(0);
+    textSize(64);
+    text(label, 10, height - 100);
+    mobilenet.predict(gotResults);
+  }
+}
+
+
+function setup() {
+  createCanvas(640, 580);
+  video = createCapture(VIDEO);
+  video.hide();
+  background(0);
+  mobilenet = ml5.imageClassifier('MobileNet', video, modelReady);
+}
+
+function draw (){
+  background(0);
+  image(video,0,0);
+  fill(255);
+  textSize(32);
+  text(label, 10, height - 34);
+}
